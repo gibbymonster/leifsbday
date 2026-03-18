@@ -15,7 +15,7 @@
       animation: gradient 6s ease infinite alternate;
       font-family: Comic Sans MS, cursive;
       color: #fff;
-      text-shadow: 0 0 15px #000, 0 0 30px #000;
+      text-shadow: 0 0 12px rgba(0,0,0,0.5), 0 0 25px #ff00ff80; /* lighter + neon touch */
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -38,6 +38,7 @@
       color: transparent;
       filter: drop-shadow(0 0 25px #ff00ff);
       animation: hue 10s infinite linear;
+      text-shadow: 0 0 20px #ff00ff80, 0 0 40px #00ffff80; /* replaced the murder shadow */
     }
 
     @keyframes hue {
@@ -100,7 +101,6 @@
   </div>
   <div class="small">pray for our retinas... and eardrums now</div>
 
-  <!-- sound effect - free party popper/confetti burst from mixkit (royalty free) -->
   <audio id="partySound" preload="auto">
     <source src="https://assets.mixkit.co/sfx/preview/mixkit-party-popper-sound-2799.mp3" type="audio/mpeg">
     your browser hates fun
@@ -125,11 +125,9 @@
       document.getElementById("seconds").textContent = s.toString().padStart(2,"0");
 
       if (diff < 1000) {
-        // play the sound once
         partyAudio.currentTime = 0;
         partyAudio.play().catch(e => console.log("autoplay blocked lol", e));
 
-        // extra confetti chaos
         confetti({ particleCount: 200, spread: 120, origin: { y: 0.6 } });
         setInterval(() => {
           confetti({ particleCount: 120, angle: 60, spread: 70, origin: { x: 0 } });
