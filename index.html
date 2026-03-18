@@ -4,12 +4,15 @@
   <meta charset="utf-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>leif's bday countdown 🥳</title>
+  <link rel="icon" type="image/png" href="leifbdayicon.png">
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
   <style>
     body {
       margin:0;
       height:100vh;
-      background:linear-gradient(135deg,#ff6b6b,#4ecdc4);
+      background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab, #ee7752);
+      background-size: 400% 400%;
+      animation: gradient 12s ease infinite;
       font-family:Arial,Helvetica,sans-serif;
       color:white;
       display:flex;
@@ -17,6 +20,11 @@
       align-items:center;
       justify-content:center;
       overflow:hidden;
+    }
+    @keyframes gradient {
+      0% {background-position: 0% 50%;}
+      50% {background-position: 100% 50%;}
+      100% {background-position: 0% 50%;}
     }
     h1 {
       font-size:4.5rem;
@@ -60,7 +68,7 @@
     <div class="unit"><div id="seconds">00</div><div class="label">seconds</div></div>
   </div>
 
-
+ 
   <script>
     function countdown() {
       const now = new Date();
@@ -79,7 +87,6 @@
       document.getElementById("minutes").textContent = m.toString().padStart(2,"0");
       document.getElementById("seconds").textContent = s.toString().padStart(2,"0");
 
-      // birthday hit? explode confetti & keep exploding every few secs cuz leif deserves spam
       if (diff < 1000) {
         confetti({
           particleCount: 150,
@@ -88,7 +95,6 @@
           colors: ['#ff0000', '#00ff00', '#0000ff', '#ffff00', '#ff00ff', '#00ffff']
         });
 
-        // extra chaos every 2.5s after birthday
         setInterval(() => {
           confetti({
             particleCount: 100,
@@ -104,13 +110,12 @@
           });
         }, 2500);
 
-        // stop the normal countdown loop after trigger
         clearInterval(timer);
       }
     }
 
     const timer = setInterval(countdown, 1000);
-    countdown(); // start now
+    countdown();
   </script>
 
 </body>
