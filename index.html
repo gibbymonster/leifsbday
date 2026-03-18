@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>leif's bday countdown 🥳</title>
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
+  <style>
+    body {
+      margin:0;
+      height:100vh;
+      background:linear-gradient(135deg,#ff6b6b,#4ecdc4);
+      font-family:Arial,Helvetica,sans-serif;
+      color:white;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      justify-content:center;
+      overflow:hidden;
+    }
+    h1 {
+      font-size:4.5rem;
+      margin:0 0 1rem;
+      text-shadow:0 0 20px rgba(0,0,0,.4);
+    }
+    .countdown {
+      display:flex;
+      gap:1.5rem;
+      font-size:2.8rem;
+      font-weight:bold;
+    }
+    .unit {
+      background:rgba(0,0,0,.25);
+      padding:1.2rem 1.8rem;
+      border-radius:16px;
+      min-width:110px;
+      text-align:center;
+      backdrop-filter:blur(6px);
+    }
+    .label {
+      font-size:1rem;
+      margin-top:.6rem;
+      opacity:.9;
+    }
+    .small {
+      font-size:1.1rem;
+      margin-top:2rem;
+      opacity:.85;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>leif turns ancient in...</h1>
+
+  <div class="countdown">
+    <div class="unit"><div id="days">00</div><div class="label">days</div></div>
+    <div class="unit"><div id="hours">00</div><div class="label">hours</div></div>
+    <div class="unit"><div id="minutes">00</div><div class="label">minutes</div></div>
+    <div class="unit"><div id="seconds">00</div><div class="label">seconds</div></div>
+  </div>
+
+  <div class="small">(may 19 — yes he’s getting old)</div>
+
+  <script>
+    function countdown() {
+      const now = new Date();
+      let target = new Date(`May 19, ${now.getFullYear()} 00:00:00`);
+      if (now > target) target.setFullYear(target.getFullYear() + 1);
+
+      const diff = target - now;
+
+      const d = Math.floor(diff / 86400000);
+      const h = Math.floor((diff % 86400000) / 3600000);
+      const m = Math.floor((diff % 3600000) / 60000);
+      const s = Math.floor((diff % 60000) / 1000);
+
+      document.getElementById("days").textContent = d.toString().padStart(2,"0");
+      document.getElementById("hours").textContent = h.toString().padStart(2,"0");
+      document.getElementById("minutes").textContent = m.toString().padStart(2,"0");
+      document.getElementById("seconds").textContent = s.toString().padStart(2,"0");
+
+      // birthday hit? explode confetti & keep exploding every few secs cuz leif deserves spam
+      if (diff < 1000) {
+        confetti({
+          particleCount: 150,
+          spread: 90,
+          origin: { y: 0.6 },
+          colors: ['#ff0000', '#00ff00', '#0000ff', '#ffff00', '#ff00ff', '#00ffff']
+        });
+
+        // extra chaos every 2.5s after birthday
+        setInterval(() => {
+          confetti({
+            particleCount: 100,
+            angle: 60,
+            spread: 55,
+            origin: { x: 0 }
+          });
+          confetti({
+            particleCount: 100,
+            angle: 120,
+            spread: 55,
+            origin: { x: 1 }
+          });
+        }, 2500);
+
+        // stop the normal countdown loop after trigger
+        clearInterval(timer);
+      }
+    }
+
+    const timer = setInterval(countdown, 1000);
+    countdown(); // start now
+  </script>
+
+</body>
+</html>
