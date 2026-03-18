@@ -8,75 +8,112 @@
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
   <style>
     body {
-      margin:0;
-      height:100vh;
-      background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab, #ee7752);
-      background-size: 400% 400%;
-      animation: gradient 12s ease infinite;
-      font-family:Comic Sans MS;
-      color:white;
-      display:flex;
-      flex-direction:column;
-      align-items:center;
-      justify-content:center;
-      overflow:hidden;
+      margin: 0;
+      height: 100vh;
+      background: linear-gradient(-45deg, #ff00aa, #00ffff, #ffea00, #ff3366, #33ff99, #aa00ff, #ff9933);
+      background-size: 600% 600%;
+      animation: gradient 6s ease infinite alternate;
+      font-family: Comic Sans MS, cursive;
+      color: #fff;
+      text-shadow: 0 0 15px #000, 0 0 30px #000;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
     }
+
     @keyframes gradient {
-      0% {background-position: 0% 50%;}
-      50% {background-position: 100% 50%;}
-      100% {background-position: 0% 50%;}
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
     }
+
     h1 {
-      font-size:4.5rem;
-      margin:0 0 1rem;
-      text-shadow:0 0 20px rgba(0,0,0,.4);
+      font-size: 5.2rem;
+      margin: 0 0 1.5rem;
+      background: linear-gradient(90deg, #ff00ff, #00ffff, #ffff00, #ff00aa);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      filter: drop-shadow(0 0 25px #ff00ff);
+      animation: hue 10s infinite linear;
     }
+
+    @keyframes hue {
+      0% { filter: hue-rotate(0deg) drop-shadow(0 0 25px #ff00ff); }
+      100% { filter: hue-rotate(360deg) drop-shadow(0 0 25px #00ffff); }
+    }
+
     .countdown {
-      display:flex;
-      gap:1.5rem;
-      font-size:2.8rem;
-      font-weight:bold;
+      display: flex;
+      gap: 1.8rem;
+      font-size: 3.5rem;
+      font-weight: bold;
     }
+
     .unit {
-      background:rgba(0,0,0,.25);
-      padding:1.2rem 1.8rem;
-      border-radius:16px;
-      min-width:110px;
-      text-align:center;
-      backdrop-filter:blur(6px);
+      background: rgba(255,255,255,0.08);
+      backdrop-filter: blur(12px);
+      padding: 1.4rem 2.2rem;
+      border-radius: 24px;
+      min-width: 130px;
+      text-align: center;
+      border: 2px solid rgba(255,255,255,0.4);
+      box-shadow: 0 0 30px rgba(255,0,255,0.5);
+      animation: pulse 3s infinite alternate;
     }
+
+    @keyframes pulse {
+      0% { box-shadow: 0 0 20px rgba(255,0,255,0.4); transform: scale(1); }
+      100% { box-shadow: 0 0 60px rgba(0,255,255,0.8); transform: scale(1.08); }
+    }
+
     .label {
-      font-size:1rem;
-      margin-top:.6rem;
-      opacity:.9;
+      font-size: 1.2rem;
+      margin-top: .7rem;
+      opacity: 0.9;
+      text-transform: uppercase;
+      letter-spacing: 2px;
     }
+
     .small {
-      font-size:1.1rem;
-      margin-top:2rem;
-      opacity:.85;
+      font-size: 1.4rem;
+      margin-top: 3rem;
+      opacity: 0.9;
+      animation: blink 1.5s infinite;
+    }
+
+    @keyframes blink {
+      0%,100% { opacity: 0.9; }
+      50% { opacity: 0.4; }
     }
   </style>
 </head>
 <body>
-
   <h1>leif turns ancient in...</h1>
-
   <div class="countdown">
     <div class="unit"><div id="days">00</div><div class="label">days</div></div>
     <div class="unit"><div id="hours">00</div><div class="label">hours</div></div>
     <div class="unit"><div id="minutes">00</div><div class="label">minutes</div></div>
     <div class="unit"><div id="seconds">00</div><div class="label">seconds</div></div>
   </div>
+  <div class="small">pray for our retinas... and eardrums now</div>
 
- 
+  <!-- sound effect - free party popper/confetti burst from mixkit (royalty free) -->
+  <audio id="partySound" preload="auto">
+    <source src="https://assets.mixkit.co/sfx/preview/mixkit-party-popper-sound-2799.mp3" type="audio/mpeg">
+    your browser hates fun
+  </audio>
+
   <script>
+    const partyAudio = document.getElementById("partySound");
+
     function countdown() {
       const now = new Date();
       let target = new Date(`May 19, ${now.getFullYear()} 00:00:00`);
       if (now > target) target.setFullYear(target.getFullYear() + 1);
-
       const diff = target - now;
-
       const d = Math.floor(diff / 86400000);
       const h = Math.floor((diff % 86400000) / 3600000);
       const m = Math.floor((diff % 3600000) / 60000);
@@ -88,27 +125,16 @@
       document.getElementById("seconds").textContent = s.toString().padStart(2,"0");
 
       if (diff < 1000) {
-        confetti({
-          particleCount: 150,
-          spread: 90,
-          origin: { y: 0.6 },
-          colors: ['#ff0000', '#00ff00', '#0000ff', '#ffff00', '#ff00ff', '#00ffff']
-        });
+        // play the sound once
+        partyAudio.currentTime = 0;
+        partyAudio.play().catch(e => console.log("autoplay blocked lol", e));
 
+        // extra confetti chaos
+        confetti({ particleCount: 200, spread: 120, origin: { y: 0.6 } });
         setInterval(() => {
-          confetti({
-            particleCount: 100,
-            angle: 60,
-            spread: 55,
-            origin: { x: 0 }
-          });
-          confetti({
-            particleCount: 100,
-            angle: 120,
-            spread: 55,
-            origin: { x: 1 }
-          });
-        }, 2500);
+          confetti({ particleCount: 120, angle: 60, spread: 70, origin: { x: 0 } });
+          confetti({ particleCount: 120, angle: 120, spread: 70, origin: { x: 1 } });
+        }, 1800);
 
         clearInterval(timer);
       }
@@ -117,6 +143,5 @@
     const timer = setInterval(countdown, 1000);
     countdown();
   </script>
-
 </body>
 </html>
