@@ -15,7 +15,6 @@
       animation: gradient 6s ease infinite alternate;
       font-family: Comic Sans MS, cursive;
       color: #fff;
-      text-shadow: 0 0 12px rgba(0,0,0,0.5), 0 0 25px #ff00ff80; /* lighter + neon touch */
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -32,18 +31,19 @@
     h1 {
       font-size: 5.2rem;
       margin: 0 0 1.5rem;
-      background: linear-gradient(90deg, #ff00ff, #00ffff, #ffff00, #ff00aa);
+      background: linear-gradient(90deg, #ff0000, #ff9900, #33cc33, #00ccff, #9933ff, #ff33cc, #ff0000);
       -webkit-background-clip: text;
       background-clip: text;
       color: transparent;
-      filter: drop-shadow(0 0 25px #ff00ff);
-      animation: hue 10s infinite linear;
-      text-shadow: 0 0 20px #ff00ff80, 0 0 40px #00ffff80; /* replaced the murder shadow */
+      background-size: 200% 200%;
+      animation: rainbow 8s linear infinite;
+      text-shadow: none; /* bye bye weirdness */
+      filter: none;
     }
 
-    @keyframes hue {
-      0% { filter: hue-rotate(0deg) drop-shadow(0 0 25px #ff00ff); }
-      100% { filter: hue-rotate(360deg) drop-shadow(0 0 25px #00ffff); }
+    @keyframes rainbow {
+      0% { background-position: 0% 50%; }
+      100% { background-position: 200% 50%; }
     }
 
     .countdown {
