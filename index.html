@@ -110,7 +110,7 @@
 
     function countdown() {
       const now = new Date();
-      let target = new Date(`May 19, ${now.getFullYear()} 00:00:00`);
+      let target = new Date(`May 20, ${now.getFullYear()} 00:00:00`);
       if (now > target) target.setFullYear(target.getFullYear() + 1);
       const diff = target - now;
       const d = Math.floor(diff / 86400000);
